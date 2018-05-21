@@ -1,6 +1,7 @@
 package realHTML.tomcat.routing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PathTemplate {
 	public String template;
@@ -62,6 +63,17 @@ public class PathTemplate {
 		}
 		
 		return(true);
+	}
+	
+	public HashMap<String, String> getParms() {
+		HashMap<String, String> parms = new HashMap<String, String>();
+		
+		for(int i = 0; i < this.entries.length; i++) {
+			if(this.entries[i].type == PathType.STATIC) { continue; }
+			parms.put(this.entries[i].name, this.entries[i].value);
+		}
+		
+		return(parms);
 	}
 	
 	private PathEntry[] convertEntries(ArrayList<String> entries) {
