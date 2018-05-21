@@ -1,3 +1,5 @@
+
+
 import java.io.IOException;
 
 import javax.servlet.ServletContext;
@@ -7,31 +9,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import realHTML.servlet.exceptions.EnviromentException;
 import realHTML.tomcat.environment.EnvironmentBuffer;
-import realHTML.tomcat.xml.Export;
+import realHTML.tomcat.xml.Import;
 
-@WebServlet("/config/save")
-public class SaveConfig extends HttpServlet {
+@WebServlet("/config/import")
+public class LoadConfig extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public SaveConfig() {
+    public LoadConfig() {
         super();
     }
-    
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Import xmlimport = new Import();
 		ServletContext context = getServletContext();
-		EnvironmentBuffer envs = (EnvironmentBuffer)context.getAttribute("environments");
-		if(envs == null) {
-			throw(new ServletException(new EnviromentException("No enviroment defined")));
-		}
 		
 		try {
-			Export export = new Export(envs);
-			export.exportToFile("/tmp/rh4nconfig.xml");
-		} catch(Exception e) {
+			EnvironmentBuffer envs = xmlimport.importFromFile("/tmp/rh4nconfig.xml");
+			context.setAttribute("environments", envs);
+		} catch (Exception e) {
 			throw(new ServletException(e));
 		}
 		response.sendRedirect("index.jsp");
 	}
+
 }

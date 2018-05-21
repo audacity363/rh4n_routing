@@ -42,5 +42,6 @@
 	</form>
 	
 	<input type="button" onclick="location.href='save'" value="Save config to file">
+	<input type="button" onclick="location.href='import'" value="Load config from file">
 </body>
 </html>
