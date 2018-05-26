@@ -10,25 +10,25 @@
 <title>Insert title here</title>
 </head>
 <body>
+<jsp:include page="messagebar.jsp"></jsp:include>
 <h2>Environments</h2>
 <%
-	ServletContext context = getServletContext();
-	EnvironmentBuffer environments = (EnvironmentBuffer)context.getAttribute("environments");
+	EnvironmentBuffer environments = EnvironmentBuffer.getEnvironmentsfromContext(application);
 	if(environments == null) {
-		out.print("No Enviroments defined");
+		response.sendRedirect("import");
 	} else {
 		String[] envnames =  environments.getEnviromentNames();
 %>
 	<ul>
 	<%
 		for(int i = 0; i < envnames.length; i++) {
-			out.print("<li><a href='enviroment.jsp?name=" + envnames[i] +"'>" + envnames[i] + "</a></li>");
+			out.print("<li><a href='environment.jsp?name=" + envnames[i] +"'>" + envnames[i] + "</a></li>");
 		}
 	%>
 	</ul>
 <% } %>
 	<hr>
-	<form method="post" action="env">
+	<form method="post" action="environment">
 		<label for="envname">Environment name:</label>
 		<input type="text" name="envname">
 		<br>
@@ -38,10 +38,8 @@
 		<label for="natsrc">Natural SRC Path:</label>
 		<input type="text" name="natsrc">
 		<br>
+		<input value="put" name="_method" type="hidden">
 		<button type="submit">Add Env</button>
 	</form>
-	
-	<input type="button" onclick="location.href='save'" value="Save config to file">
-	<input type="button" onclick="location.href='import'" value="Load config from file">
 </body>
 </html>

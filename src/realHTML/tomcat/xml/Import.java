@@ -1,6 +1,7 @@
 package realHTML.tomcat.xml;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -19,7 +20,7 @@ import realHTML.tomcat.environment.EnvironmentBuffer;
 import realHTML.tomcat.routing.Route;
 
 public class Import {
-	public EnvironmentBuffer importFromFile(String path) throws ParserConfigurationException, SAXException, IOException, XMLException, EnviromentException {
+	public EnvironmentBuffer importFromFile(String path) throws ParserConfigurationException, SAXException, IOException, XMLException, EnviromentException, FileNotFoundException {
 		EnvironmentBuffer envs = new EnvironmentBuffer();
 		
 		DocumentBuilderFactory dbFactory; 
@@ -27,6 +28,10 @@ public class Import {
         Document doc;
 
         File inputFile = new File(path);
+        
+        if(!inputFile.exists()) {
+        	throw(new FileNotFoundException());
+        }
 
         dbFactory = DocumentBuilderFactory.newInstance();
         dBuilder = dbFactory.newDocumentBuilder();
@@ -78,7 +83,8 @@ public class Import {
 		NodeList routesList, tmpList;
 		Element targetElement, tmpElement;
 		
-		String template, natLibrary = "", natProgram = "";
+		String template, natLibrary = "", natProgram = "", login_s = "", loglevel = "";
+		Boolean login;
 		Route route;
 		
 		
@@ -102,10 +108,29 @@ public class Import {
 				natProgram = tmpElement.getTextContent();
 			}
 			
-			route = new Route(natLibrary, natProgram);
+			tmpList = targetElement.getElementsByTagName("login");
+			if(tmpList.getLength() != 0) {
+				tmpElement = (Element)tmpList.item(0);
+				login_s = tmpElement.getTextContent();
+				if(login_s.equals("true")) { login = true; }
+				else { login = false; }
+			} else {
+				login = false;
+			}
+			
+			tmpList = targetElement.getElementsByTagName("loglevel");
+			if(tmpList.getLength() != 0) {
+				tmpElement = (Element)tmpList.item(0);
+				loglevel = tmpElement.getTextContent();
+			} else {
+				loglevel = "ERROR";
+			}
+			
+			route = new Route(natLibrary, natProgram, login, loglevel);
 			envs.addRoutetoEnv(envname, template, route);
 			
-			template = natLibrary = natProgram = "";
+			template = natLibrary = natProgram = login_s = loglevel = "";
+			login = false;
 		}
 		
 		return(envs);

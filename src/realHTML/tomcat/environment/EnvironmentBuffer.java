@@ -2,6 +2,8 @@ package realHTML.tomcat.environment;
 
 import java.util.HashMap;
 
+import javax.servlet.ServletContext;
+
 import realHTML.servlet.exceptions.EnviromentException;
 import realHTML.tomcat.routing.Route;
 
@@ -22,6 +24,10 @@ public class EnvironmentBuffer {
 		this.enviroments.put(enviroment, env);
 	}
 	
+	public void deleteEnvironment(String name) {
+		this.enviroments.remove(name);
+	}
+	
 	public void addRoutetoEnv(String enviroment, String template, Route route) throws EnviromentException {
 		if(!this.enviroments.containsKey(enviroment)) {
 			throw(new EnviromentException("Enviroment " + enviroment + " not found"));
@@ -30,7 +36,7 @@ public class EnvironmentBuffer {
 		this.enviroments.get(enviroment).routing.addRoute(template, route);
 	}
 	
-	public Environment getEnviroment(String enviroment) throws EnviromentException {
+	public Environment getEnvironment(String enviroment) throws EnviromentException {
 		if(!this.enviroments.containsKey(enviroment)) {
 			throw(new EnviromentException("Enviroment " + enviroment + " not found"));
 		}
@@ -47,6 +53,14 @@ public class EnvironmentBuffer {
 			throw(new EnviromentException("Enviroment " + enviroment + " not found"));
 		}
 		
-		this.enviroments.get(enviroment).addEnviron(name, content, append);
+		this.enviroments.get(enviroment).addEnvironmentVar(name, content, append);
+	}
+	
+	public static EnvironmentBuffer getEnvironmentsfromContext(ServletContext context) {
+		return (EnvironmentBuffer)context.getAttribute("environments");
+	}
+	
+	public static void setEnvironmentsforContext(ServletContext context, EnvironmentBuffer envs) {
+		context.setAttribute("environments", envs);
 	}
 }

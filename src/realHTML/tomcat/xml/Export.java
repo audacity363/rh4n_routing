@@ -53,7 +53,7 @@ public class Export {
 	
 	private Element envtoString(Document doc, String envname) throws EnviromentException {
 		Element envElement, natsrcElement, natparmElement; 
-		Environment env = this.envs.getEnviroment(envname);
+		Environment env = this.envs.getEnvironment(envname);
 		
 		envElement = doc.createElement("environment");
 		envElement.setAttribute("name", envname);
@@ -107,7 +107,8 @@ public class Export {
 	}
 	
 	private Element routestoString(Document doc, Routing routing) {
-		Element routesElement, routeElement, natlibrary, natprogram;
+		Element routesElement, routeElement, natlibrary, natprogram,
+			loginElement, loglevelElement;
 		
 		PathTemplate[] routes = routing.getRoutes();
 		
@@ -123,8 +124,20 @@ public class Export {
 			natprogram = doc.createElement("natProgram");
 			natprogram.setTextContent(routes[i].route.natProgram);
 			
+			loginElement = doc.createElement("login");
+			if(routes[i].route.login) {
+				loginElement.setTextContent("true");
+			} else {
+				loginElement.setTextContent("false");
+			}
+			
+			loglevelElement = doc.createElement("loglevel");
+			loglevelElement.setTextContent(routes[i].route.loglevel);
+			
 			routeElement.appendChild(natlibrary);
 			routeElement.appendChild(natprogram);
+			routeElement.appendChild(loginElement);
+			routeElement.appendChild(loglevelElement);
 			
 			routesElement.appendChild(routeElement);
 		}

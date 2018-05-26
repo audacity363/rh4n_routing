@@ -42,6 +42,13 @@ public class Routing {
 		return(this.templates.get(id).route);
 	}
 	
+	public void deleteRoute(int id) {
+		if(id > this.templates.size()) {
+			return;
+		}
+		this.templates.remove(id);
+	}
+	
 	public PathTemplate[] getRoutes() {
 		return(this.templates.toArray(new PathTemplate[this.templates.size()]));
 	}

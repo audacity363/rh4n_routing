@@ -5,7 +5,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,27 +12,10 @@ import realHTML.servlet.exceptions.EnviromentException;
 import realHTML.tomcat.environment.Environment;
 import realHTML.tomcat.environment.EnvironmentBuffer;
 import realHTML.tomcat.routing.PathTemplate;
-import realHTML.tomcat.routing.Route;
-import realHTML.tomcat.xml.Import;
 
 @WebServlet("/nat/*")
-public class MainServlet extends HttpServlet {
+public class MainServlet extends RealHTMLInit {
 	private static final long serialVersionUID = 1L;
-	
-	public void init() throws ServletException {
-		ServletContext context = getServletContext();
-		EnvironmentBuffer envs = (EnvironmentBuffer)context.getAttribute("environments");
-		if(envs == null) {
-			Import myimport = new Import();
-			try {
-				envs = myimport.importFromFile("/tmp/rh4nconfig.xml");
-			} catch (Exception e) {
-				throw (new ServletException(e));
-			}
-			
-			context.setAttribute("environments", envs);
-		}
-	}
        
     public MainServlet() {
         super();
@@ -57,7 +39,7 @@ public class MainServlet extends HttpServlet {
         
         Environment env;
         try {
-        	env = envs.getEnviroment(enviroment);
+        	env = envs.getEnvironment(enviroment);
         } catch (Exception e) {
         	throw(new ServletException(e));
         }

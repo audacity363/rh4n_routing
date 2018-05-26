@@ -1,9 +1,7 @@
 import java.io.IOException;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,7 +10,7 @@ import realHTML.tomcat.environment.EnvironmentBuffer;
 import realHTML.tomcat.xml.Export;
 
 @WebServlet("/config/save")
-public class SaveConfig extends HttpServlet {
+public class SaveConfig extends RealHTMLInit {
 	private static final long serialVersionUID = 1L;
        
     public SaveConfig() {
@@ -20,18 +18,23 @@ public class SaveConfig extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ServletContext context = getServletContext();
-		EnvironmentBuffer envs = (EnvironmentBuffer)context.getAttribute("environments");
+		EnvironmentBuffer envs = EnvironmentBuffer.getEnvironmentsfromContext(getServletContext());
 		if(envs == null) {
 			throw(new ServletException(new EnviromentException("No enviroment defined")));
 		}
 		
 		try {
 			Export export = new Export(envs);
-			export.exportToFile("/tmp/rh4nconfig.xml");
+			export.exportToFile(this.configurationfile);
 		} catch(Exception e) {
 			throw(new ServletException(e));
 		}
-		response.sendRedirect("index.jsp");
+		
+		getServletContext().setAttribute("message", "Successfully saved configuration to " + this.configurationfile);
+		if(request.getHeader("referer") != null) {
+			response.sendRedirect(request.getHeader("referer"));
+		} else {
+			response.sendRedirect("index.jsp");
+		}
 	}
 }
