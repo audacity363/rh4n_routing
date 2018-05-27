@@ -55,7 +55,12 @@ public class MainServlet extends RealHTMLInit {
         for(String key: parms.keySet() ) {
         	out.print("<li>[" + key + "] = [" + parms.get(key) + "]</li>");
         }
-        out.print("</ul></body></html>");
+        out.print("</ul><br>");
+        out.print("<span>Library: " + route.route.natLibrary + "</span><br>");
+        out.print("<span>Program: " + route.route.natProgram + "</span><br>");
+        out.print("<span>Loglevel: " + route.route.loglevel+ "</span><br>");
+        out.print("<span>Login: " + route.route.login + "</span><br>");
+        out.print("</body></html>");
 	}
 
 }

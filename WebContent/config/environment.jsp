@@ -57,6 +57,9 @@
 		<label for="login">Login:</label>
 		<input type="checkbox" name="login">
 		<br>
+		<label for="login">Active:</label>
+		<input type="checkbox" name="active" checked>
+		<br>
 		<label for="loglevel">Loglevel:</label>
 		<select name="loglevel">
 			<option value="DEVELOP">Develop</option>
@@ -80,7 +83,7 @@
 	}
 %>
 </ul>
-<form method="post" action="environ">
+<form method="post" action="environmentvar">
 		<label for="varname">Variablename:</label>
 		<input type="text" name="varname">
 		<br>

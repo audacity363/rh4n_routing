@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="tomcat-demo" version="2.4"
+	xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<servlet>
+		<servlet-name>LoadConfig</servlet-name>
+		<servlet-class>RealHTMLLoadConfig</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoadConfig</servlet-name>
+		<url-pattern>/config/import</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>SaveConfig</servlet-name>
+		<servlet-class>RealHTMLSaveConfig</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SaveConfig</servlet-name>
+		<url-pattern>/config/save</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ManageEnvironmentVars</servlet-name>
+		<servlet-class>RealHTMLManageEnvironmentVars</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ManageEnvironmentVars</servlet-name>
+		<url-pattern>/config/environmentvar</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ManageEnvironment</servlet-name>
+		<servlet-class>RealHTMLManageEnvironment</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ManageEnvironment</servlet-name>
+		<url-pattern>/config/environment</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ManageRoute</servlet-name>
+		<servlet-class>RealHTMLManageRoute</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ManageRoute</servlet-name>
+		<url-pattern>/config/routes</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>MainServlet</servlet-name>
+		<servlet-class>MainServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MainServlet</servlet-name>
+		<url-pattern>/nat/*</url-pattern>
+	</servlet-mapping>
+
+ <security-constraint>
+		<web-resource-collection>
+			<web-resource-name>RealHTML4Natural configuration</web-resource-name>
+			<url-pattern>/config/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>tomcat</role-name>
+		</auth-constraint>
+
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+
+</web-app>

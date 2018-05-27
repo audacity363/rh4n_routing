@@ -21,9 +21,9 @@
 %>
 <label for="name">Name:</label><span id="name"><% out.print(environvar.name); %></span><br>
 <label for="value">Value:</label><input type="text" id="value" value=<%= environvar.value %>><br>
-<label for="append">Append:</label><input id="append" type="checkbox" checked=<%= environvar.append %>>
+<label for="append">Append:</label><input id="append" type="checkbox" <% if(environvar.append) { %> checked <%} %>>
 
-<form action="environ" method="post">
+<form action="environmentvar" method="post">
 	<input value=<%= envname %> name="_envname" type="hidden">
 	<input value=<%= environvar.name %> name="varname" type="hidden">
 	<input value="delete" name="_method" type="hidden">

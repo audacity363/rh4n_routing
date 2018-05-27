@@ -83,8 +83,9 @@ public class Import {
 		NodeList routesList, tmpList;
 		Element targetElement, tmpElement;
 		
-		String template, natLibrary = "", natProgram = "", login_s = "", loglevel = "";
-		Boolean login;
+		String template, natLibrary = "", natProgram = "", login_s = "", 
+				loglevel = "", active_s = "";
+		Boolean login, active;
 		Route route;
 		
 		
@@ -126,10 +127,20 @@ public class Import {
 				loglevel = "ERROR";
 			}
 			
-			route = new Route(natLibrary, natProgram, login, loglevel);
+			tmpList = targetElement.getElementsByTagName("active");
+			if(tmpList.getLength() != 0) {
+				tmpElement = (Element)tmpList.item(0);
+				active_s = tmpElement.getTextContent();
+				if(active_s.equals("true")) { active = true; }
+				else { active = false; }
+			} else {
+				active = false;
+			}
+			
+			route = new Route(natLibrary, natProgram, login, loglevel, active);
 			envs.addRoutetoEnv(envname, template, route);
 			
-			template = natLibrary = natProgram = login_s = loglevel = "";
+			template = natLibrary = natProgram = login_s = loglevel = active_s = "";
 			login = false;
 		}
 		

@@ -1,7 +1,6 @@
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,11 +8,10 @@ import realHTML.servlet.exceptions.EnviromentException;
 import realHTML.tomcat.environment.EnvironmentBuffer;
 import realHTML.tomcat.xml.Export;
 
-@WebServlet("/config/save")
-public class SaveConfig extends RealHTMLInit {
+public class RealHTMLSaveConfig extends RealHTMLInit {
 	private static final long serialVersionUID = 1L;
        
-    public SaveConfig() {
+    public RealHTMLSaveConfig() {
         super();
     }
     
@@ -31,6 +29,7 @@ public class SaveConfig extends RealHTMLInit {
 		}
 		
 		getServletContext().setAttribute("message", "Successfully saved configuration to " + this.configurationfile);
+		getServletContext().removeAttribute("settingssaved");
 		if(request.getHeader("referer") != null) {
 			response.sendRedirect(request.getHeader("referer"));
 		} else {

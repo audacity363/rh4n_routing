@@ -19,7 +19,7 @@
 		String routeid = request.getParameter("id");
 		Environment environment = environments.getEnvironment(envname);
 		Route route = environment.routing.getRouteById(Integer.parseInt(routeid));
-		System.out.println(route.loglevel);
+		System.out.println(route.active);
 	%>
 	<form method="post" action="routes">
 		<label for="library">Natural Library:</label>
@@ -28,9 +28,11 @@
 		<label for="program">Natural Program:</label>
 		<input type="text" name="program" value=<%= route.natProgram %>>
 		<br>
-		<input value="post" name="_method" type="hidden">
 		<label for="login">Login:</label>
 		<input type="checkbox" name="login" <%if(route.login){%>checked<%}%>>
+		<br>
+		<label for="active">Active:</label>
+		<input type="checkbox" name="active" <%if(route.active){%>checked<%}%>>
 		<br>
 		<label for="loglevel">Loglevel:</label>
 		<select name="loglevel">
@@ -44,6 +46,7 @@
 		<br>
 		<input value=<%= envname %> name="_envname" type="hidden">
 		<input value=<%= routeid %> name="_routeid" type="hidden">
+		<input value="post" name="_method" type="hidden">
 		<button type="submit">Save</button>
 	</form>
 	<form method="post" action="routes">

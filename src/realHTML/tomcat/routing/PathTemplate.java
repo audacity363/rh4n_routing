@@ -28,6 +28,9 @@ public class PathTemplate {
 	public Boolean matchPath(String url) {
 		String[] urlentries_complete = url.split("/"),
 				 urlentries;
+		if(!this.route.active) {
+			return(false);
+		}
 		
 		urlentries = new String[urlentries_complete.length-1];
 		System.arraycopy(urlentries_complete, 1, urlentries, 0, urlentries_complete.length-1);
@@ -61,6 +64,7 @@ public class PathTemplate {
 //				this.entries[i].setValue(urlentries[i]);
 //			}
 		}
+		
 		
 		return(true);
 	}

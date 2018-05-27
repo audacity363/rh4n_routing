@@ -1,7 +1,6 @@
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,7 +8,6 @@ import realHTML.servlet.exceptions.EnviromentException;
 import realHTML.tomcat.environment.Environment;
 import realHTML.tomcat.environment.EnvironmentBuffer;
 
-@WebServlet("/config/environment")
 public class RealHTMLManageEnvironment extends RealHTMLInit {
 	private static final long serialVersionUID = 1L;
        
@@ -43,6 +41,7 @@ public class RealHTMLManageEnvironment extends RealHTMLInit {
 		}
 		
 		EnvironmentBuffer.setEnvironmentsforContext(getServletContext(), envs);
+		getServletContext().setAttribute("settingssaved", false);
 		if(method.equals("post")) {
 			response.sendRedirect("environment.jsp?name=" + envname);
 		} else {

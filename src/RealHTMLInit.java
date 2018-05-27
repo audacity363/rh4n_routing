@@ -21,8 +21,6 @@ public class RealHTMLInit extends HttpServlet {
 	
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		System.out.print("Starting realHTML4Natural Tomcat Connector");
-		System.out.println(" Version: " + this.version);
 		
 		this.configurationfile = System.getenv("RH4NCONF");
 		if(this.configurationfile == null) {
@@ -34,20 +32,30 @@ public class RealHTMLInit extends HttpServlet {
 			throw(new ServletException("Enviroment variable RH4NLOG is missing"));
 		}
 		
-		Import xmlimport = new Import();
-		EnvironmentBuffer envs;
+		if(getServletContext().getAttribute("isinitialised") != null) {
+			return;
+		}
+		System.out.print("Starting realHTML4Natural Tomcat Connector");
+		System.out.println(" Version: " + this.version);
 		
-		try {
-			envs = xmlimport.importFromFile(this.configurationfile);
-		} catch(FileNotFoundException e) {
-			System.out.println("Warning: File " + configurationfile + " does not exist.");
-			System.out.println("Warning: There will be no environments definied.");
-			envs = new EnvironmentBuffer();
-		} catch (ParserConfigurationException | SAXException | IOException | XMLException | EnviromentException e) {
-			throw(new ServletException(e));
+		if(EnvironmentBuffer.getEnvironmentsfromContext(getServletContext()) == null) {
+			Import xmlimport = new Import();
+			EnvironmentBuffer envs;
+			
+			try {
+				envs = xmlimport.importFromFile(this.configurationfile);
+			} catch(FileNotFoundException e) {
+				System.out.println("Warning: File " + configurationfile + " does not exist.");
+				System.out.println("Warning: There will be no environments definied.");
+				envs = new EnvironmentBuffer();
+			} catch (ParserConfigurationException | SAXException | IOException | XMLException | EnviromentException e) {
+				throw(new ServletException(e));
+			}
+			
+			EnvironmentBuffer.setEnvironmentsforContext(getServletContext(), envs);
 		}
 		
-		EnvironmentBuffer.setEnvironmentsforContext(getServletContext(), envs);
+		getServletContext().setAttribute("isinitialised", true);
 		
 		System.out.println("Successfully initialised realHTML4Natural Tomcat Connector");
 	}
