@@ -6,12 +6,6 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
-import realHTML.servlet.exceptions.EnviromentException;
-import realHTML.servlet.exceptions.XMLException;
 import realHTML.tomcat.environment.EnvironmentBuffer;
 import realHTML.tomcat.xml.Import;
 
@@ -30,7 +24,7 @@ public class RealHTMLLoadConfig extends RealHTMLInit {
 				envs = xmlimport.importFromFile(this.configurationfile);
 			} catch(FileNotFoundException e) {
 				envs = new EnvironmentBuffer();
-			} catch (ParserConfigurationException | SAXException | XMLException | EnviromentException e) {
+			} catch (Exception e) {
 				throw(new ServletException(e));
 			}
 			EnvironmentBuffer.setEnvironmentsforContext(getServletContext(), envs);

@@ -1,15 +1,9 @@
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import javax.xml.parsers.ParserConfigurationException;
 
-import org.xml.sax.SAXException;
-
-import realHTML.servlet.exceptions.EnviromentException;
-import realHTML.servlet.exceptions.XMLException;
 import realHTML.tomcat.environment.EnvironmentBuffer;
 import realHTML.tomcat.xml.Import;
 
@@ -48,7 +42,7 @@ public class RealHTMLInit extends HttpServlet {
 				System.out.println("Warning: File " + configurationfile + " does not exist.");
 				System.out.println("Warning: There will be no environments definied.");
 				envs = new EnvironmentBuffer();
-			} catch (ParserConfigurationException | SAXException | IOException | XMLException | EnviromentException e) {
+			} catch (Exception e) {
 				throw(new ServletException(e));
 			}
 			

@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="javax.servlet.ServletContext" %>    
 <%@ page import="realHTML.tomcat.routing.*" %>
-<%@ page import="realHTML.tomcat.environment.*" %>    
+<%@ page import="realHTML.tomcat.environment.*" %> 
+<%@ page import="realHTML.tomcat.gui.*" %>   
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -18,6 +19,8 @@
 	Environment environment = environments.getEnvironment(envname);
 	String[] routes = environment.routing.getRoutesTemplates();
 	EnvironmentVar[] environs = environment.getEnvirons();
+	
+	RouteSorting.sortRoutes(environment.routing);
 %>
 <h1>Environment: <% out.print(envname); %></h1>
 <form method="post" action="environment">

@@ -29,10 +29,10 @@
 		<input type="text" name="program" value=<%= route.natProgram %>>
 		<br>
 		<label for="login">Login:</label>
-		<input type="checkbox" name="login" <%if(route.login){%>checked<%}%>>
+		<input type="checkbox" name="login" <%if(route.login.booleanValue()){%>checked<%}%>>
 		<br>
 		<label for="active">Active:</label>
-		<input type="checkbox" name="active" <%if(route.active){%>checked<%}%>>
+		<input type="checkbox" name="active" <%if(route.active.booleanValue()){%>checked<%}%>>
 		<br>
 		<label for="loglevel">Loglevel:</label>
 		<select name="loglevel">
