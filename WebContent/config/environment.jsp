@@ -8,7 +8,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../css/treeview.css">
 <title>Insert title here</title>
+<style>
+	.container {
+		width: 100%
+	}
+	div.left {
+		float: left;
+		width: 50%
+	}
+</style>
 </head>
 <body>
 <jsp:include page="messagebar.jsp"></jsp:include>
@@ -20,7 +30,7 @@
 	String[] routes = environment.routing.getRoutesTemplates();
 	EnvironmentVar[] environs = environment.getEnvirons();
 	
-	RouteSorting.sortRoutes(environment.routing);
+	RouteTree routetree = RouteSorting.sortRoutes(environment.routing);
 %>
 <h1>Environment: <% out.print(envname); %></h1>
 <form method="post" action="environment">
@@ -40,13 +50,24 @@
 	<button type="submit">Delete</button>
 </form>
 <h2>Routes</h2>
-<ul>
-<%
-	for(int i = 0; i < routes.length; i++) {
-		out.print("<li><a href='route.jsp?id=" + i + "&name=" + envname + "'>" + routes[i] + "</a></li>");
-	}
-%>
-</ul>
+<select id="viewchanger" onchange="changeView(this)">
+	<option value="tree" selected>Tree View</option>
+	<option value="list">List View</option>
+</select>
+<div id="treeview">
+	<%
+		routetree.printHTML(out, envname, 0);
+	%>
+</div>
+<div id="listview" style="display: none">
+	<ul>
+	<%
+		for(int i = 0; i < routes.length; i++) {
+			out.print("<li><a href='route.jsp?id=" + i + "&name=" + envname + "'>" + routes[i] + "</a></li>");
+		}
+	%>
+	</ul>
+</div>
 	<form method="post" action="routes">
 		<label for="routelink">Route Template:</label>
 		<input type="text" name="routelink">
@@ -102,4 +123,17 @@
 	</form>
 <hr>
 </body>
+<script>
+	function changeView(target) {
+		var view = target.options[target.selectedIndex].value;
+		console.log(view);
+		if(view === "tree") {
+			document.getElementById("treeview").style.display = "block";
+			document.getElementById("listview").style.display = "none";
+		} else {
+			document.getElementById("treeview").style.display = "none";
+			document.getElementById("listview").style.display = "block";
+		}
+	}
+</script>
 </html>

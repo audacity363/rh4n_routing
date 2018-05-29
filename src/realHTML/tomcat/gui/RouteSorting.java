@@ -6,7 +6,7 @@ import realHTML.tomcat.routing.Routing;
 
 public class RouteSorting {
 
-	static public void sortRoutes(Routing routing) {
+	public static RouteTree sortRoutes(Routing routing) {
 		PathTemplate tmp;
 		RouteTree treeentry, root;
 		String targetpath;
@@ -21,7 +21,7 @@ public class RouteSorting {
 				if(!treeentry.checkPath(targetpath)) {
 					System.out.println("Adding " + targetpath + " to " + treeentry.path);
 					if(x == tmp.entries.length-1) {
-						treeentry.addChild(targetpath, i);
+						treeentry.addChild(targetpath, i, tmp.entries[x]);
 					} else {
 						treeentry.addChild(targetpath);
 					}
@@ -32,6 +32,6 @@ public class RouteSorting {
 			}
 		}
 		
-		root.print(0);
+		return(root);
 	}
 }
