@@ -7,12 +7,14 @@ import javax.servlet.jsp.JspWriter;
 
 import realHTML.tomcat.routing.PathEntry;
 import realHTML.tomcat.routing.PathType;
+import realHTML.tomcat.routing.Route;
 
 public class RouteTree {
 	public ArrayList<RouteTree> childs;
 	public String path;
 	public int id;
-	public PathEntry route;
+	public PathEntry pathentry;
+	public Route route;
 	
 	public RouteTree() {
 		this.childs = new ArrayList<RouteTree>();
@@ -28,10 +30,11 @@ public class RouteTree {
 		this.childs.add(tmp);
 	}
 	
-	public void addChild(String path, int id, PathEntry route) {
+	public void addChild(String path, int id, PathEntry entry, Route route) {
 		RouteTree tmp = new RouteTree();
 		tmp.path = path;
 		tmp.id = id;
+		tmp.pathentry = entry;
 		tmp.route = route;
 		
 		this.childs.add(tmp);
@@ -60,12 +63,33 @@ public class RouteTree {
 		else { out.print("<ul>"); }
 		if(this.id != -1) { out.print("<a href=\"route.jsp?id=" + this.id +"&name=" + environmentname + "\">"); }
 		else { out.print("<a>"); }
-		if(this.route != null) {
-			if(this.route.getType() == PathType.VARIABLE) { out.print(":"); }
-			if(this.route.getType() == PathType.SELECTION) { out.print("|"); }
+		if(level > 1) { out.print("/"); }
+		if(this.pathentry != null) {
+			if(this.pathentry.getType() == PathType.VARIABLE || this.pathentry.getType() == PathType.SELECTION) { 
+				out.print("&lt;"); 
+			}
 		}
 		out.print(this.path);
+		if(this.pathentry != null) {
+			
+			if(this.pathentry.getType() == PathType.SELECTION) {
+				out.print("=");
+				String[] options = this.pathentry.getOptions();
+				for(int i = 0; i < options.length; i++) {
+					out.print(options[i]);
+					if(i+1 < options.length) {
+						out.print("|");
+					}
+				}
+				out.print("&gt;");
+			}
+			
+			if(this.pathentry.getType() == PathType.VARIABLE) { out.print("&gt;"); }
+		}
 		out.print("</a>");
+		if(this.route != null) {
+			out.print("<span>&rarr; (" + this.route.natLibrary +"/" + this.route.natProgram + ")</span>");
+		}
 		for(int i = 0; i < this.childs.size(); i++) {
 			out.print("<li>");
 			this.childs.get(i).printHTML(out, environmentname, level+1);
