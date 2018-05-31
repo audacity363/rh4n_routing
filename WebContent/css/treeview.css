@@ -40,6 +40,7 @@
     border-radius:0px 0 0 0;
     width:20px;
     height:100%;
+    cursor: "pointer";
 }
 
 .tree li:last-child::after  {
@@ -74,4 +75,17 @@ ul.tree>li:first-child::after {
 .tree li a:hover+ul::before, .tree li a:focus+ul::before 
 .tree li a:hover+ul ul::before, .tree li a:focus+ul ul::before{
     border-color:  #000; /*connector color on hover*/
+}
+
+.tree>li>ul li:last-child .arrow {
+	display: none;
+}
+
+.arrow {
+	cursor: pointer;
+}
+
+.rotate-arrow {
+	transform: rotate(90deg);
+	display: inline-block;
 }

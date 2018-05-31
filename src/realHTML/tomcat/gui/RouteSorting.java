@@ -19,7 +19,6 @@ public class RouteSorting {
 			for(int x = 0; x < tmp.entries.length; x++) {
 				targetpath = tmp.entries[x].getName();
 				if(!treeentry.checkPath(targetpath)) {
-					System.out.println("Adding " + targetpath + " to " + treeentry.path);
 					if(x == tmp.entries.length-1) {
 						treeentry.addChild(targetpath, i, tmp.entries[x], tmp.route);
 					} else {

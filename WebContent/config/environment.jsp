@@ -55,6 +55,8 @@
 	<option value="list">List View</option>
 </select>
 <div id="treeview">
+	<button onClick="unfoldeverything()">Unfold everything</button>
+	<button onClick="collapseeverything()">Collapse everything</button>
 	<%
 		routetree.printHTML(out, envname, 0);
 	%>
@@ -133,6 +135,60 @@
 		} else {
 			document.getElementById("treeview").style.display = "none";
 			document.getElementById("listview").style.display = "block";
+		}
+	}
+	
+	function unfoldeverything() {
+		var targets = document.getElementsByClassName("tree")[0].getElementsByTagName("li");
+		for(var i = 0; i < targets.length; i = i + 1) {
+			targets[i].style.display = "block";
+		}
+		
+		targets = document.getElementsByClassName("arrow");
+		for(var i = 0; i < targets.length; i = i + 1) {
+			targets[i].className += " rotate-arrow";
+		}
+	}
+	
+	function collapseeverything() {
+		var targets  = document.getElementsByClassName("tree")[0].children;
+		//TODO: find a better way. 
+		//The list elements in the first ul are not allowed to get set to "display: none"
+		//so I must jump over them
+		for(var i = 0; i < targets.length; i = i + 1) {
+			if(targets[i].tagName === "LI") {
+				var childs = targets[i].getElementsByTagName("li");;
+				for(var x = 0; x < childs.length; x = x + 1) {
+						childs[x].style.display = "none";
+				}
+			}
+		}
+		
+		var tmp = document.querySelectorAll(".rotate-arrow");
+		for(var i = 0; i < tmp.length; i = i + 1) {
+			tmp[i].className = tmp[i].className.replace(" rotate-arrow", "");
+		}
+		
+	}
+	
+	var arrows = document.getElementsByClassName("arrow");
+	for(var i = 0; i < arrows.length; i = i + 1) {
+		arrows[i].onclick = function() {
+			var childs = this.parentElement.children;
+			for(var i = 0; i < childs.length; i = i + 1) {
+				if(childs[i].tagName === "LI") {
+					if(childs[i].style.display == "none") {
+						childs[i].style.display = "block";	
+					} else {
+						childs[i].style.display = "none";
+					}
+				}
+			}
+			if(!this.classList.contains("rotate-arrow")) {
+				this.className += " rotate-arrow";
+			} else {
+				this.className = this.className.replace(" rotate-arrow", "");
+			}
 		}
 	}
 </script>

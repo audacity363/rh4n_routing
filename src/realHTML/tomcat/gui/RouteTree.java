@@ -60,7 +60,9 @@ public class RouteTree {
 	
 	public void printHTML(JspWriter out, String environmentname, int level) throws IOException {
 		if(level == 0) { out.print("<ul class=\"tree\">"); }
+		//else if(level > 1) { out.print("<ul style=\"display: none\""); }
 		else { out.print("<ul>"); }
+		if(level > 0) { out.print("<span class=\"arrow\">&#10148;</span>"); }
 		if(this.id != -1) { out.print("<a href=\"route.jsp?id=" + this.id +"&name=" + environmentname + "\">"); }
 		else { out.print("<a>"); }
 		if(level > 1) { out.print("/"); }
@@ -91,7 +93,8 @@ public class RouteTree {
 			out.print("<span>&rarr; (" + this.route.natLibrary +"/" + this.route.natProgram + ")</span>");
 		}
 		for(int i = 0; i < this.childs.size(); i++) {
-			out.print("<li>");
+			if(level > 0) { out.print("<li style=\"display: none\">"); }
+			else { out.print("<li>"); }
 			this.childs.get(i).printHTML(out, environmentname, level+1);
 			out.print("</li>");
 		}
